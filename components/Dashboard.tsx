@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAuth } from "~hooks/useAuth";
 import useAxiosPrivate from "~hooks/useAxios";
-import LogoSvg from "../assets/logo.svg";
+import LogoSvg from "~assets/logo.svg";
 import { Check, CircleUserRound, Cookie, Copy, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -115,7 +115,7 @@ const Item = (item: PlatformAccount) => {
           </div>
         </div>
         {
-          item.login === 'Cookie' ?
+           item.time_left.string === 'Hết hạn' ? null :  item.login === 'Cookie'?
             <button onClick={() => sendCookieToWebsite()} title="Đăng nhập bằng cookie" className="p-2 rounded-md hover:bg-blue-50 text-zinc-900 flex items-center justify-center opacity-0 group-hover:opacity-100 duration-150" >
               <Cookie size={16} />
             </button>

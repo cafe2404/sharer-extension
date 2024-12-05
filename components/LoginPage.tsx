@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import LogoSvg from "../assets/logo.svg";
+import LogoSvg from "~assets/logo.svg";
 import { useAuth } from "~hooks/useAuth";
 const LoginPage = () => {
     const { login,user } = useAuth();
@@ -30,6 +30,19 @@ const LoginPage = () => {
     useEffect(() => {
         setError("");
     }, [username,password]);
+    const openSignup = () => {
+        chrome.tabs.create(
+            {
+                url: "http://localhost:8000/signup/",
+                active: true,
+            },
+            (tab) => {
+                if (tab.id) {
+                    chrome.tabs.update(tab.id, { active: true });
+                }
+            }
+        )
+    };
     return (
         <div className="w-80 p-4 bg-white">
             <div className="flex flex-col items-center justify-center mt-6">
@@ -71,12 +84,12 @@ const LoginPage = () => {
                                 </a>
                             </div>
                         </div>
-                        <div className="!mt-8">
+                        <div className="!mt-4">
                             <button type="submit" className="font-semibold w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
                                 Đăng nhập
                             </button>
                         </div>
-                        {/* <p className="text-gray-800 text-sm !mt-8 text-center">Don't have an account? <a href="javascript:void(0);" className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold">Register here</a></p> */}
+                        <p className="text-gray-800 text-sm !mt-4 text-center pb-4">Chưa có tài khoản? <a onClick={openSignup} href="#" className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold">Đăng ký ngay</a></p>
                     </form>
                 </div>
             </div>
