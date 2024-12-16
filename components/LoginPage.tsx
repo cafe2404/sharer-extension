@@ -13,7 +13,7 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8000/api/login/", {
+            const response = await axios.post("http://160.187.246.61/api/login/", {
                 username,
                 password,
             });
@@ -34,7 +34,7 @@ const LoginPage = () => {
     const openSignup = () => {
         chrome.tabs.create(
             {
-                url: "http://localhost:8000/signup/",
+                url: "http://160.187.246.61/signup/",
                 active: true,
             },
             (tab) => {
