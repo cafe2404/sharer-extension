@@ -18,13 +18,13 @@ const removeCookie = async (name: string, domain: string) => {
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.type === "setCookie") {
     try {
-      const { cookie, domain } = message;
+      const { cookie, url } = message;
 
-      // Kiểm tra giá trị cookie và domain
+      // Kiểm tra giá trị cookie và url
       if (!cookie) {
         throw new Error("cookie is undefined or empty");
       }
-      if (!domain) {
+      if (!url) {
         throw new Error("domain is undefined or empty");
       }
 
@@ -38,14 +38,14 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
           const value = valueParts.join("=");
 
           // Xóa cookie cũ trước khi thêm cookie mới
-          await removeCookie(name.trim(), domain);
+          await removeCookie(name.trim(), url);
 
           // Thêm cookie mới
           const cookie_res = await chrome.cookies.set({
-            url: domain.startsWith("http") ? domain : `https://${domain}`,
+            url: url.startsWith("http") ? url : `https://${url}`,
             name: name.trim(),
             value: value.trim(),
-            domain: new URL(domain).hostname, // Trích xuất miền từ URL
+            domain: new URL(url).hostname, // Trích xuất miền từ URL
             path: "/",
             secure: true,
             sameSite: "lax", // Hoặc "None" nếu cần

@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     // Trực tiếp gửi thông điệp đến background để gán cookie
     chrome.runtime.sendMessage(
-      { type: "setCookie", cookie: message.cookie, domain: message.domain },
+      { type: "setCookie", cookie: message.cookie, url: message.url },
       (response) => {
         if (response?.success) {
           console.log("Cookie đã được gán thành công!");

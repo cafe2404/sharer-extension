@@ -6,8 +6,6 @@ export default function useAxiosPrivate() {
   const { token, updateToken, refreshToken, logout } = useAuth();
 
   useEffect(() => {
-    console.log("Token:", token);
-    console.log("Refresh Token:", refreshToken);
     
     const requestIntercept = axiosInstance.interceptors.request.use(
       (config) => {

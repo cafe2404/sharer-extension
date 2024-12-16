@@ -44,11 +44,7 @@ export const AuthProvider = ({ children }) => {
     setToken(newToken);
     localStorage.setItem("token", newToken);
   };
-  useEffect(() => {
-    console.log("User in AuthContext: ", user);
-    console.log("Token in AuthContext: ", token);
-    console.log("Refresh Token in AuthContext: ", refreshToken);
-  }, [user, token, refreshToken]);
+
   return (
     <AuthContext.Provider
       value={{
