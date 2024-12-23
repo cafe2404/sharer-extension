@@ -1,64 +1,48 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
+// Tạo context cho Auth
 export const AuthContext = createContext({
   user: null,
   token: null,
   refreshToken: null,
-  login: (data) => {}, // Hàm login nhận cả thông tin người dùng và tokens
-  logout: () => {},               // Hàm logout
-  updateToken: (newToken) => {},  // Hàm để cập nhật token mới
+  updateToken: (newToken: string) => {}
 });
-
 export const AuthProvider = ({ children }) => {
-  // Lấy trạng thái ban đầu từ localStorage (nếu có)
-  const [user, setUser] = useState(() => localStorage.getItem("user"));
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [refreshToken, setRefreshToken] = useState(() =>localStorage.getItem("refreshToken"));
+  const [user, setUser] = useState(() => null);
+  const [token, setToken] = useState(() => null);
+  const [refreshToken, setRefreshToken] = useState(() => null);
 
-  // Hàm login: lưu thông tin user và tokens vào state và localStorage
-  const login = (data) => {
-    const { user, accessToken, refreshToken } = data;
-    console.log(data)
-    setUser(user);
-    setToken(accessToken);
-    setRefreshToken(refreshToken);
+  useEffect(() => {
+    chrome.storage.local.get(["user", "token", "refreshToken"], (result) => {
+      if (result.user && result.token) {
+        setUser(result.user);
+        setToken(result.token);
+        setRefreshToken(result.refreshToken);
+      }
+    });
+  }, []);
 
-    localStorage.setItem("user", user);
-    localStorage.setItem("token", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-  };
+  // UseEffect để lưu token vào chrome.storage khi nó thay đổi
+  useEffect(() => {
+    if (token) {
+      chrome.storage.local.set({ token });
+    }
+  }, [token]);
 
-  // Hàm logout: xóa thông tin user và tokens
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    setRefreshToken(null);
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-  };
-
-  // Hàm để cập nhật accessToken mới
+  // UseEffect để lưu refreshToken vào chrome.storage khi nó thay đổi
+  useEffect(() => {
+    if (refreshToken) {
+      chrome.storage.local.set({ refreshToken });
+    }
+  }, [refreshToken]);
   const updateToken = (newToken) => {
-    setToken(newToken);
-    localStorage.setItem("token", newToken);
+    setToken(newToken)
+    chrome.storage.local.set({ token: newToken });
   };
-
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        refreshToken,
-        login,
-        logout,
-        updateToken,
-      }}
-    >
+    <AuthContext.Provider value={{ user, token, refreshToken,updateToken }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
 

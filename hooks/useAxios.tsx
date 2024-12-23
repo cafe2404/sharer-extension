@@ -3,7 +3,7 @@ import { useAuth } from "./useAuth";
 import axiosInstance from "../services/axiosInstance";
 
 export default function useAxiosPrivate() {
-  const { token, updateToken, refreshToken, logout } = useAuth();
+  const { token, updateToken, refreshToken } = useAuth();
 
   useEffect(() => {
     
@@ -31,12 +31,11 @@ export default function useAxiosPrivate() {
               refresh: refreshToken,
             });
             const newAccessToken = r.data.access;
-            updateToken(newAccessToken); // Cập nhật token mới
+            updateToken(newAccessToken);
             prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-            return axiosInstance(prevRequest); // Gửi lại request với token mới
+            return axiosInstance(prevRequest); 
           } catch (refreshError) {
             console.error("Làm mới token thất bại:", refreshError);
-            logout(); // Logout nếu không thể làm mới token
           }
         }
         return Promise.reject(error);
@@ -47,7 +46,7 @@ export default function useAxiosPrivate() {
       axiosInstance.interceptors.request.eject(requestIntercept);
       axiosInstance.interceptors.response.eject(responseIntercept);
     };
-  }, [token, refreshToken, updateToken, logout]);
+  }, [token, refreshToken, updateToken]);
 
   return axiosInstance;
 }
