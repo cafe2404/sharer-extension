@@ -31,12 +31,22 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://*/*",
+      "http://*/*" ,
+      "http://localhost:8000/*"
     ],
     "permissions": [
       "cookies", 
       "activeTab", 
-      "tabs"
-    ]
+      "tabs",
+      "storage",
+      "runtime"
+    ],
+    "externally_connectable": {
+      "ids": ["*"],
+      "matches": [
+        "http://my.localhost/*"
+      ]
+    }
   }
 }

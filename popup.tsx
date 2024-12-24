@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import LoginPage from "./components/LoginPage";
+// import LoginPage from "./components/LoginPage";
+import LoginRedirect from "./components/LoginRedirect";
+ 
 import Dashboard from "./components/Dashboard";
 import "./static/css/style.css";
 import { useAuth } from "~hooks/useAuth";
@@ -16,7 +18,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={user ? <Dashboard /> : <Navigate to={'/login'}/> } />
-      <Route path="/login" element={user ? <Navigate to={'/'}/> : <LoginPage />} />
+      <Route path="/login" element={user ? <Navigate to={'/'}/> : <LoginRedirect />} />
     </Routes>
   );
 };

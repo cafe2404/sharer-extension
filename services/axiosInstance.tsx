@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://160.187.246.61/api",
+  baseURL: process.env.PLASMO_PUBLIC_API_URL,
 });
 
 export default axiosInstance;
